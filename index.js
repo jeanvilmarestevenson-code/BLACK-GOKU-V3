@@ -47,14 +47,23 @@ async function startBot(){
     }catch{}
   });
 
-  sock.ev.on('messages.upsert', async({messages})=>{
+sock.ev.on('messages.upsert', async({messages})=>{
     const m = messages[0];
-    if(!m.message || m.key.fromMe) return;
+    if(!m.message) return;
     const from = m.key.remoteJid;
     const isGroup = from.endsWith('@g.us');
-    const sender = m.key.participant || from;
+    let sender = m.key.participant || from;
+    const isFromMe = m.key.fromMe;
+    if(isFromMe) sender = OWNER_JID; // toi = owner
+
     const text = m.message.conversation || m.message.extendedTextMessage?.text || m.message.imageMessage?.caption || m.message.videoMessage?.caption || "";
     const quoted = m.message.extendedTextMessage?.contextInfo?.quotedMessage;
+
+    if(chut.includes(sender) && isGroup){ try{ await sock.sendMessage(from,{delete: m.key}); }catch{} return; }
+    //... garde ton code antilink ici...
+
+    if(!text.startsWith(PREFIX)) return;
+    //... reste de ton code avec sender...
 
     // CHUT - suppression auto
     if(chut.includes(sender) && isGroup){ try{ await sock.sendMessage(from,{delete: m.key}); }catch{} return; }
