@@ -25,5 +25,4 @@ app.get('/', (req,res)=>{
 })
 
 app.listen(10000, ()=> console.log("Web OK port 10000"))
-
 module.exports = { setQR }
