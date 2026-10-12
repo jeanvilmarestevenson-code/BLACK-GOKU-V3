@@ -1,13 +1,29 @@
 const express = require('express');
 const app = express();
 let qrImage = null;
-let status = "Demarrage du neant...";
-app.get('/', (req,res)=>{
-  if(qrImage){
-    res.send(`<body style="background:#000;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;font-family:monospace"><h1 style="border:2px solid #fff;padding:10px">BLACK GOKU V4 - 1000%</h1><img src="${qrImage}" style="width:320px;height:320px;background:#fff;padding:10px;margin:20px"><p>WhatsApp > Appareils lies > Scanner</p><h2>${status}</h2><script>setTimeout(()=>location.reload(),15000)</script></body>`);
+let qrText = "Démarrage...";
+
+app.get('/', (req, res) => {
+  if (qrImage) {
+    res.send(`
+      <html><body style="background:#111;color:#fff;text-align:center;padding:20px;font-family:sans-serif">
+      <h1>BLACK GOKU V4 - 1000%</h1>
+      <h3>${qrText}</h3>
+      <img src="${qrImage}" style="width:300px;border:5px solid #0f0"/>
+      <p>Scanne avec WhatsApp > Appareils liés</p>
+      </body></html>
+    `);
   } else {
-    res.send(`<body style="background:#000;color:#0f0;display:flex;justify-content:center;align-items:center;height:100vh;font-family:monospace;flex-direction:column"><h1 style="font-size:35px">${status}</h1><script>setTimeout(()=>location.reload(),3000)</script></body>`);
+    res.send(`<h1>${qrText}</h1><p>BOT H24 ACTIF - 1000%</p>`);
   }
 });
-app.listen(3000, ()=>console.log("Web OK"));
-module.exports = { setQR: (img, txt)=>{ if(img===null){ qrImage=null; status=txt||"BOT CONNECTE H24!"; return; } qrImage=img; status=txt||"SCANNE LE QR"; }, setStatus: (t)=>{ status=t; } };
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log('WEB OK PORT ' + PORT));
+
+function setQR(image, text) {
+  qrImage = image;
+  qrText = text;
+}
+
+module.exports = { setQR };
