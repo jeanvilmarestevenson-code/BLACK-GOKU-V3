@@ -1,4 +1,4 @@
-.gitignore (avec les 5 lignes)
-index.js (minuscule! pas Index.js)
-package.json
-web.js
+node_modules
+auth
+black_db.json
+package-lock.json
