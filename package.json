@@ -2,9 +2,7 @@
   "name": "black-goku-v3",
   "version": "3.0.0",
   "main": "index.js",
-  "scripts": {
-    "start": "node index.js"
-  },
+  "scripts": { "start": "node index.js" },
   "dependencies": {
     "@whiskeysockets/baileys": "^6.7.8",
     "pino": "^8.16.0",
