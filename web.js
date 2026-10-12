@@ -1,22 +1,9 @@
-const express = require('express')
-const app = express()
-let qrCode = null
-let statusText = "EN ATTENTE QR..."
-
-function setQR(qr, text){
-    const QRCode = require('qrcode')
-    statusText = text
-    if(qr){
-        QRCode.toDataURL(qr, (err, url)=>{ if(!err) qrCode = url })
-    } else { qrCode = null }
-}
-app.get('/', (req,res)=>{
-    if(qrCode){
-        res.send(`<html><body style="background:#000;color:#fff;text-align:center;font-family:monospace;padding-top:30px"><h1 style="color:#0f0">${statusText}</h1><img src="${qrCode}" style="width:330px;border:4px solid #0f0"><p>Scanne avec WhatsApp</p></body></html>`)
-    } else {
-        res.send(`<html><body style="background:#000;color:#0f0;text-align:center;font-family:monospace;padding-top:80px"><h1>${statusText}</h1><h2>BOT 1000% H24 ACTIF</h2><p>Refresh dans 5 sec</p></body></html>`)
-    }
-})
-const PORT = process.env.PORT || 10000
-app.listen(PORT, ()=> console.log("Web OK "+PORT))
-module.exports = { setQR }
+const http = require('http');
+let lastQR = null, status = "En attente...";
+function setQR(qr, s){ lastQR=qr; if(s) status=s; }
+const server = http.createServer((req,res)=>{
+res.writeHead(200, {'Content-Type':'text/html; charset=utf-8'});
+res.end(`<html><head><meta name="viewport" content="width=device-width"><style>body{background:#000;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;font-family:monospace} #qrcode{background:#fff;padding:15px;border-radius:10px} h1{color:#a00}</style><script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script></head><body><h1>BLACK GOKU V3</h1><p>${status}</p><div id="qrcode"></div><script>const qr=${JSON.stringify(lastQR)}; if(qr){ new QRCode(document.getElementById("qrcode"),{text:qr,width:280,height:280}) } else { document.getElementById("qrcode").innerHTML="<p>CONNECTE ✅</p>"} setTimeout(()=>location.reload(), 15000)</script></body></html>`);
+});
+server.listen(process.env.PORT||3000);
+module.exports={setQR};
