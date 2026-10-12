@@ -29,12 +29,8 @@ async function startBot(){
         const isGroup = from.endsWith('@g.us')
         let content = m.message.conversation || m.message.extendedTextMessage?.text || m.message.imageMessage?.caption || m.message.videoMessage?.caption || ""
 
-        // AUTO MODERATION CHUT / ANTISTICKER
         if(db.chut.includes(sender) &&!m.key.fromMe){ try{ await sock.sendMessage(from, {delete: m.key}) }catch{} return }
         if(isGroup && db.antisticker[from] && m.message.stickerMessage){ try{ await sock.sendMessage(from, {delete: m.key}) }catch{} return }
-
-        // GHOST = PAS DE VU
-        if(db.ghost &&!m.key.fromMe){ /* ne marque pas comme lu */ } else { /* normal */ }
 
         if(!content.startsWith('₩')) return
         if(!db.botEnabled &&!content.startsWith('₩bot')) return
@@ -51,13 +47,9 @@ async function startBot(){
         const isOwner = sender===db.owner || m.key.fromMe
         const isAmis = db.amis.includes(sender)
         const isAuth = isOwner || isAmis
-        const isProtected = (jid)=> jid===db.owner || db.saved.includes(jid) || db.pro.includes(jid) || db.godmode.includes(jid)
-
         if(!isAuth){ await sock.sendMessage(from, {text: MSG_NO_POWER}, {quoted: m}); return }
-
+        const isProtected = (jid)=> jid===db.owner || db.saved.includes(jid) || db.pro.includes(jid) || db.godmode.includes(jid)
         let target = getTarget()
-
-        // PROTECTION ANTI-OWNER & ANTI-PRO
         if(target && isProtected(target) && ["ban","kick","chut","blockadmin","demote","mute"].includes(cmd)){
             if(!isOwner){
                 await sock.sendMessage(from, {text: MSG_GOD}, {quoted: m})
@@ -66,7 +58,6 @@ async function startBot(){
             }
         }
 
-        // ===== MENU STYLE QUE TU AS ENVOYE =====
         if(["black","menu","info","config"].includes(cmd)){
             await sock.sendMessage(from, {text:
 `BLACK GOKU
@@ -97,12 +88,12 @@ PREFIX: ₩
 │ • ₩ghost
 │ • ₩rdm
 │ • ₩sticker
-│
+
 │ ⚙️ STYLE & CONFIG
 │ • ₩mode / ₩style
-│ • ₩config / ₩black /
-    •₩info
-│ •₩pt on/off
+│ • ₩config / ₩black
+│ • ₩info
+│ • ₩pt on/off
 
 │ 🔒 OWNER ONLY
 │ • ₩bot on/off
