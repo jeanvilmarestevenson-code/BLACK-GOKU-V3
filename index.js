@@ -90,9 +90,11 @@ Black Goku
 PREFIX: ₩
 ╭────────────────
 │ 👥 GESTION GROUPE
-│ • ₩ban / ₩kick [@user]
+│ • ₩ban 
+  •₩kick [@user]
 │ • ₩add [num]
-│ • ₩promote / ₩demote [@user]
+│ • ₩promote 
+  •₩demote [@user]
 │ • ₩admin
 │ • ₩groupinfo
 │
@@ -110,7 +112,10 @@ PREFIX: ₩
 │ • ₩pro / ₩unpro [@user]
 │
 │ 👁️ SECRET & FUN
-│ • ₩vq / ₩sticker / ₩rdm / ₩del
+│ • ₩vq
+  •₩sticker 
+  •₩rdm 
+  • ₩del
 │
 │ ⚙️ CONFIG
 │ • ₩ping / ₩mode / ₩bot on/off
